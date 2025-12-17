@@ -43,3 +43,36 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// Docker Compose tasks
+tasks.register('dockerComposeUp', Exec) {
+    group = 'docker'
+    description = 'Start PostgreSQL container using docker-compose'
+    commandLine 'docker', 'compose', 'up', '-d'
+    doFirst {
+        println 'Starting PostgreSQL container...'
+    }
+    doLast {
+        println 'PostgreSQL container started successfully'
+    }
+}
+
+tasks.register('dockerComposeDown', Exec) {
+    group = 'docker'
+    description = 'Stop and remove PostgreSQL container'
+    commandLine 'docker', 'compose', 'down'
+    doFirst {
+        println 'Stopping PostgreSQL container...'
+    }
+}
+
+tasks.register('dockerComposeStatus', Exec) {
+    group = 'docker'
+    description = 'Show status of docker-compose services'
+    commandLine 'docker', 'compose', 'ps'
+}
+
+// Optional: Start docker-compose before running the application
+tasks.named('bootRun') {
+    dependsOn 'dockerComposeUp'
+}
