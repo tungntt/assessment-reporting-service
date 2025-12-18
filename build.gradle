@@ -100,3 +100,86 @@ tasks.withType(JavaCompile) {
 tasks.named('bootRun') {
     dependsOn 'dockerComposeUp'
 }
+
+// Component test task
+tasks.register('componentTest', Test) {
+    group = 'verification'
+    description = 'Run component tests'
+    
+    // Use the test source set
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    
+    // Use JUnit Platform
+    useJUnitPlatform()
+    
+    // Filter tests to only run component tests from the component package
+    // Using include pattern that matches the package structure
+    include 'component/com/xphr/reporting/ms/**'
+    
+    // Ensure test classes are compiled and docker-compose is up before running tests
+    dependsOn 'testClasses'
+    dependsOn 'dockerComposeUp'
+    
+    // Ensure docker-compose is down after tests (even if they fail)
+    finalizedBy 'dockerComposeDown'
+    
+    // Wait for docker-compose services to be ready before starting tests
+    doFirst {
+        println 'Waiting for docker-compose services to be ready...'
+        def maxAttempts = 30
+        def attempt = 0
+        def ready = false
+        
+        while (!ready && attempt < maxAttempts) {
+            try {
+                // Check if postgres container is running and ready
+                def statusProcess = new ProcessBuilder('docker', 'compose', 'exec', '-T', 'postgres', 
+                    'pg_isready', '-U', 'reporting_user', '-d', 'assessment_reporting')
+                    .redirectErrorStream(true)
+                    .start()
+                statusProcess.waitFor()
+                
+                if (statusProcess.exitValue() == 0) {
+                    ready = true
+                    println 'Docker services are ready!'
+                } else {
+                    attempt++
+                    if (attempt < maxAttempts) {
+                        Thread.sleep(1000)
+                    }
+                }
+            } catch (Exception e) {
+                attempt++
+                if (attempt < maxAttempts) {
+                    Thread.sleep(1000)
+                } else {
+                    println "Warning: Could not verify docker services readiness: ${e.message}"
+                    println "Proceeding anyway - tests will fail if database is not ready"
+                    ready = true
+                }
+            }
+        }
+        
+        if (!ready && attempt >= maxAttempts) {
+            throw new RuntimeException('Docker services did not become ready in time (30 seconds)')
+        }
+        
+        println 'Starting component tests...'
+    }
+    
+    doLast {
+        println 'Component tests completed'
+    }
+    
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+        showStandardStreams = true
+    }
+}
+
+// Ensure dockerComposeDown runs after componentTest
+tasks.named('dockerComposeDown') {
+    mustRunAfter 'componentTest'
+}

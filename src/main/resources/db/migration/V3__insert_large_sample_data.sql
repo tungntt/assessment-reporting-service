@@ -18,5 +18,5 @@ SELECT
     ts,
     ts + (INTERVAL '1 hour' + random() * INTERVAL '8 hours')
 FROM generate_series(1, 200000) AS seq,
-LATERAL (SELECT NOW() - (random() * INTERVAL '60 days') AS ts) t
+LATERAL (SELECT NOW() - (random() * INTERVAL '30 days') AS ts) t
     ON CONFLICT (id) DO NOTHING;
