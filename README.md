@@ -5,11 +5,12 @@
 This application follows a **layered architecture**:
 
 1. **Controller Layer** - Handles HTTP requests and responses
-2. **Service Layer** - Contains business logic
-3. **Mapper Layer** - Logic Mapping/Transform data from Entity/Model to DTO
-4. **Repository Layer** - Data access using Spring Data JPA
-5. **Entity Layer** - JPA entities mapping to database tables
-6. **Config Layer** - Contain Configurations (Security, Web)
+2. **Exception Handler Layer** - Global exception handling and error responses
+3. **Service Layer** - Contains business logic
+4. **Mapper Layer** - Logic Mapping/Transform data from Entity/Model to DTO
+5. **Repository Layer** - Data access using Spring Data JPA
+6. **Entity Layer** - JPA entities mapping to database tables
+7. **Config Layer** - Contain Configurations (Security, Web)
 
 ## Project Structure
 
@@ -30,6 +31,8 @@ src/
 │   │       │   │   └── TrackingRequestInterceptor.java
 │   │       │   ├── LoginController.java           # Login/authentication controller
 │   │       │   └── TimeRecordController.java      # Time record report controller
+│   │       ├── exception/                          # Exception handling layer
+│   │       │   └── GlobalExceptionHandler.java    # Global exception handler
 │   │       ├── mapper/                             # Mapper layer
 │   │       │   └── ReportMapper.java              # MapStruct mapper (Entity/Model → DTO)
 │   │       ├── repository/                         # Repository layer
@@ -72,6 +75,8 @@ src/
     │       ├── ComponentTest.java                 # Component test annotation
     │       ├── controller/
     │       │   └── TimeRecordControllerTest.java
+    │       ├── exception/
+    │       │   └── GlobalExceptionHandlerTest.java
     │       ├── mapper/
     │       │   └── ReportMapperTest.java
     │       ├── repository/
