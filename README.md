@@ -158,6 +158,12 @@ Open your browser and navigate to http://localhost:8080
 ./gradlew dockerDown
 ```
 
+### Next Improvement
+- Replace the In-memory Security by An Authentication Server (such as: Keycloak)
+- Integrate with Hashicorp Vault to Store/Secure Database Credential
+- Implement Cucumber Test as Blackbox Test
+
+
 ### Reference Documentation
 
 For further reference, please consider the following sections:
