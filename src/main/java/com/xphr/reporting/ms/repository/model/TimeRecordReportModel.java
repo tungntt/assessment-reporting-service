@@ -17,8 +17,4 @@ public class TimeRecordReportModel {
         this.totalHours = totalHours;
     }
 
-    public String getFormattedHours() {
-        if (totalHours == null) return "0.00";
-        return String.format("%.2f", totalHours);
-    }
 }
