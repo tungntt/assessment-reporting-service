@@ -11,6 +11,77 @@ This application follows a **layered architecture**:
 5. **Entity Layer** - JPA entities mapping to database tables
 6. **Config Layer** - Contain Configurations (Security, Web)
 
+## Project Structure
+
+```
+src/
+├── main/
+│   ├── java/
+│   │   └── com/xphr/reporting/ms/
+│   │       ├── Application.java                    # Main application entry point
+│   │       ├── config/                             # Configuration layer
+│   │       │   ├── SecurityConfig.java            # Spring Security configuration
+│   │       │   └── WebConfig.java                 # Web MVC configuration
+│   │       ├── controller/                         # Controller layer
+│   │       │   ├── dto/                           # Data Transfer Objects
+│   │       │   │   ├── PagingListResponseDto.java
+│   │       │   │   └── TimeRecordReportDto.java
+│   │       │   ├── interceptor/                   # Request interceptors
+│   │       │   │   └── TrackingRequestInterceptor.java
+│   │       │   ├── LoginController.java           # Login/authentication controller
+│   │       │   └── TimeRecordController.java      # Time record report controller
+│   │       ├── mapper/                             # Mapper layer
+│   │       │   └── ReportMapper.java              # MapStruct mapper (Entity/Model → DTO)
+│   │       ├── repository/                         # Repository layer
+│   │       │   ├── entity/                        # JPA entities
+│   │       │   │   ├── EmployeeEntity.java
+│   │       │   │   ├── ProjectEntity.java
+│   │       │   │   └── TimeRecordEntity.java
+│   │       │   ├── model/                         # Repository models
+│   │       │   │   └── TimeRecordReportModel.java
+│   │       │   └── TimeRecordRepository.java      # Spring Data JPA repository
+│   │       ├── service/                            # Service layer
+│   │       │   └── TimeRecordReadService.java     # Business logic for time records
+│   │       └── util/                               # Utility classes
+│   │           └── DateTimeUtils.java             # Date/time utilities
+│   ├── resources/
+│   │   ├── application.yml                        # Main application configuration
+│   │   ├── application-dev.yml                    # Development profile configuration
+│   │   ├── application-prod.yml                   # Production profile configuration
+│   │   ├── db/
+│   │   │   └── migration/                         # Flyway database migrations
+│   │   │       ├── V1__create_table.sql
+│   │   │       ├── V2__insert_sample_data.sql
+│   │   │       └── V3__insert_large_sample_data.sql
+│   │   ├── evidence/                              # Performance evidence images
+│   │   │   ├── before_optimize.png
+│   │   │   └── after_optimize.png
+│   │   ├── static/                                # Static resources (CSS, JS, images)
+│   │   └── templates/                             # Template files
+│   └── webapp/
+│       └── WEB-INF/
+│           └── jsp/                               # JSP view templates
+│               ├── error.jsp
+│               ├── login.jsp
+│               └── work_hours_report.jsp
+└── test/
+    ├── java/
+    │   ├── com/xphr/reporting/ms/
+    │   │   └── ApplicationTests.java              # Application context tests
+    │   └── component/com/xphr/reporting/ms/       # Component/integration tests
+    │       ├── ComponentTest.java                 # Component test annotation
+    │       ├── controller/
+    │       │   └── TimeRecordControllerTest.java
+    │       ├── mapper/
+    │       │   └── ReportMapperTest.java
+    │       ├── repository/
+    │       │   └── TimeRecordRepositoryTest.java
+    │       └── service/
+    │           └── TimeRecordReadServiceTest.java
+    └── resources/
+        └── application-test.yml                   # Test profile configuration
+```
+
 ## Security Implementation
 
 - Spring Security with form-based authentication
