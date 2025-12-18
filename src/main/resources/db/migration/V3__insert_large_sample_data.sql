@@ -13,10 +13,10 @@ FROM generate_series(1, 200) AS seq
 INSERT INTO time_record (id, employee_id, project_id, time_from, time_to)
 SELECT
     seq AS id,
-    100 + (seq % 100) AS employee_id,
-    1 + (seq % 200) AS project_id,
+    100 + ((seq - 1) % 901) AS employee_id,  -- Distribute across employees 100-1000 (901 employees)
+    1 + ((seq - 1) % 200) AS project_id,     -- Distribute across projects 1-200 (200 projects)
     ts,
     ts + (INTERVAL '1 hour' + random() * INTERVAL '8 hours')
-FROM generate_series(1, 5000) AS seq,
+FROM generate_series(1, 200000) AS seq,
 LATERAL (SELECT NOW() - (random() * INTERVAL '60 days') AS ts) t
     ON CONFLICT (id) DO NOTHING;
