@@ -63,6 +63,7 @@ ORDER BY
 
 ```sql
 SELECT
+    t.employee_id,
     e.name AS employee_name,
     p.name AS project_name,
     SUM(EXTRACT(EPOCH FROM (t.time_to - t.time_from)) / 3600) AS total_hours
@@ -70,7 +71,7 @@ FROM time_record t
 JOIN employee e ON t.employee_id = e.id
 JOIN project p ON t.project_id = p.id
 WHERE t.time_from >= NOW() - INTERVAL '1 month'
-GROUP BY e.name, p.name
+GROUP BY t.employee_id, e.name, p.name
 ORDER BY e.name, p.name;
 ```
 
