@@ -20,6 +20,12 @@ configurations {
     }
 }
 
+ext {
+    mapstructVersion = "1.6.3"
+    lombokVersion = "1.18.38"
+    lombokMapstructBindingVersion = "0.2.0"
+}
+
 repositories {
     mavenCentral()
 }
@@ -34,6 +40,12 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'
     implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
+
+    // Mapstruct
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+    implementation("org.apache.commons:commons-lang3:3.20.0")
 
     implementation 'org.flywaydb:flyway-database-postgresql'
     compileOnly 'org.projectlombok:lombok'
@@ -76,6 +88,12 @@ tasks.register('dockerComposeStatus', Exec) {
     group = 'docker'
     description = 'Show status of docker-compose services'
     commandLine 'docker', 'compose', 'ps'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
 }
 
 // Optional: Start docker-compose before running the application
