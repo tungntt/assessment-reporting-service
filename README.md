@@ -158,6 +158,18 @@ Open your browser and navigate to http://localhost:8080
 ./gradlew dockerDown
 ```
 
+## Run Component Test
+
+### 1. Make sure No Docker Container Runs
+```bash
+./gradlew dockerDown
+```
+
+### 2. Run Component Test
+```bash
+./gradlew componentTest
+```
+
 ### Next Improvement
 - Replace the In-memory Security by An Authentication Server (such as: Keycloak)
 - Integrate with Hashicorp Vault to Store/Secure Database Credential
