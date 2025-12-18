@@ -30,10 +30,12 @@
     </style>
 </head>
 <body>
-    <div class="error-card">
-        <h3 class="mb-3">Oops! Something went wrong</h3>
-        <a href="/" class="btn btn-primary mt-3">Back to Home</a>
-    </div>
+<div class="error-card">
+    <div class="error-code">${errorCode}</div>
+    <h3 class="mb-3">Something went wrong</h3>
+    <p class="text-muted">${errorMessage}</p>
+    <a href="/" class="btn btn-primary mt-3">Back to Report</a>
+</div>
 </body>
 </html>
 
