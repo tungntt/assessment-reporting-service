@@ -1,4 +1,4 @@
-package com.xphr.reporting.service;
+package com.xphr.reporting.ms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
